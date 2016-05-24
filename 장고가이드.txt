@@ -1,0 +1,188 @@
+
+  Django-
+	1. 
+	   (1)
+	   ::프로젝트만들기 : (원하는경로가서) django-admin startproject mysite
+	   ::서버실행하기 : python manage.py runserver //localhost:8000
+	   ::서버종료 : Ctrl + c
+
+	   (2)
+	   ::python manage.py startapp elections ( 만들고자하는 폴더)
+	   ::Hello World 만들기
+		▶view.py에 들어가서, [코드]from django.http import HttpResponse
+				 	    def index(request):
+					        return HttpResponse ("Hello world") //request 했을때 발동.
+		
+		▶mysite urls.py -> urlpatterns : 어떻게 맵핑시킬껀지관리
+				 ■url(r'^admin/', admin.site.urls)
+					 <경로>       <담당해결자>
+				 
+				 ■url(r'^', include('elections.urls')) include : app에대해서 접속처리 必! <<include 쓸려면 마찬가지로, import
+		
+		▶elections 하위에 urls.py 생성.
+		▶mysite urls.py 코드 복사해서 가져오기 
+					[코드]from django.conf.urls import url
+					  from . import views  //view 모듈사용하기위해.
+
+					  urlpatterns = [
+ 						url(r'^$', views.index), //$ 경로x
+					  ]
+	   (3)
+	   :: 정보저장 : models.py 
+			[코드]from django.db import models
+				
+			      class Candidate(models.Model):
+				 name = models.CharField(max_length=10) //길이제한 10
+				 introduction = models.TextField() //길이제한없다
+				 area = models.CharField(max_length=15)
+				 party_number = models.IntegerField(default=1)
+	   (4)
+	   ::database 이용하기  i. ▶mysite settings.py 
+				   ▶INSTALLED_APPS 에 모델에 쓴 사용할 class 등록
+				   
+ 			       ii. python mange.py makemigrations
+				   ▶0001.initial~ 파일생성 <<-db에 쓸정보 정리파일
+			      
+			      iii. python manage.py migrate <-db의 공간생성! 
+
+	   (5) 
+	   ::admin 계정만들기 ▶python manage.py createsuperuser
+	   ::Candidate 관리 뭔가만들자!
+			▶admin.py -> [코드] from django.contrib import admin
+					     from . models import Candidate
+
+					     admin.site.register(Candidate) <<클래스등록
+	     ->Candidate 등록하면 object로 똑같이 떠서 뭐가 뭔지모르겠다.
+			▶models.py -> class Candidate
+					""def __str__(self):
+						return self.name "" << 변화형성
+
+	   (6)
+	   :: 데이터보여주기 // 디비에 엑셀마냥 등록되어있음 열col : 정보주석
+							     행row : 각object들
+			▶views.py
+				   [코드] from . models import Candidate
+				    def index(request):
+					candidates = Candidate.objects.all()
+					str = ''
+					for candidate in candidates:
+					   str += "<p>{} 기호{}번({})<BR>".format(candidate.name,
+					   candidate.party_number,
+					   candidate.area)
+					   str += candidate.introduction+"</p>"
+				        return HttpResponse(str)	
+
+	   (7)
+	   ::python manage.py shell <-직접 db에 요청날리다. //shell로 데이터 끄적끄적	
+		from elections.models import Candidate <<불러오고
+		Candidate.objects.all() <<보여줘
+		▶new_candidate = Candidate(name="루비오") <<새로운데이터저장준비	
+		▶new_candidate.save() <<새로운데이터 저장
+   		no1 = Candidate.objects.filter(party_number = 1) << 클래스 포인터?? 형성
+
+		>>>no1
+		[<Candidate: 윤태인>, <Candidate: 루비오>]
+		>>>no1[0].party_number
+		1
+		>>>no1[0].name
+		'윤태인'
+		>>>no1[0].introduction
+		'확통잘하자'
+
+
+	   (8)
+	   ::template 만들어서 화면그리기 //각앱마다 쓰는것이 겹칠수 있기에 template 폴더 만들어서관리
+		1.앱(elecetions) 폴더 아래에 templates 폴더 생성 (C\Code\mysite\elections\template)
+		2.templates 폴더 아래 elecetions 폴더 생성(C\Code\mysite\elections\template\elections)
+		3.elecetions 폴더 아래 index.html 파일 생성 (C\Code\mysite\elections\template\elections\index.html)
+		4.index.html (강의노트 html 태그,소스복사 과 views.py 수정 )
+
+		▶views.py 는
+			[코드]def index(request):		<<이렇게 새로 리뉴얼된다.
+   			candidates = Candidate.objects.all()
+   			return render(request, 'elections/index.html')
+	   (9)
+	   ::template 에 정보채우기
+		1. views.py에서 DB에 있는 후보 정보를 html에 전달
+		▶[코드]
+		from django.shortcuts import render
+		from django.http import HttpResponse
+
+		from .models import Candidate
+
+		def index(request):
+   		candidates = Candidate.objects.all()
+   		context = {'candidates' : candidates} #context에 모든 후보에 대한 정보를 저장
+    		return render(request, 'elections/index.html', context) # context로 html에 모든 후보에 대한 정보를 전달
+
+		2. indedx.html에서는 반복문을 돌며 전달받은 후보 정보를 보여줍니다
+		**html에서 코드쓰려면 {} 로 감싸주기,
+		<tbody>
+ 	       {% for candidate in candidates %}
+        	<tr>
+           		<td> {{ candidate.name }} </td>
+            		<td> {{ candidate.introduction }} </td>
+            		<td> {{ candidate.area }} </td>
+            		<td>기호 {{ candidate.party_number }} 번</td>
+        	</tr>
+        	{% endfor %}
+                <tbody>
+
+	   (10)
+		1. 새로운 모델을 models.py에 정의합니다.
+		▶[코드]class Poll(models.Model):
+    			  start_date = models.DateTimeField()
+    			  end_date = models.DateTimeField()
+    			  area = models.CharField(max_length = 15)
+
+			class Choice(models.Model):
+    			  poll = models.ForeignKey(Poll) #Poll 모델의 id를 이용
+    			  candidate = models.ForeignKey(Candidate)
+    			  votes = models.IntegerField(default = 0)
+
+
+
+		2. admin에서 Poll 모델을 사용하기 위해, admin.py에 Poll을 등록(regist)합니다.
+		▶[코드]from django.contrib import admin
+			from .models import Candidate, Poll
+
+
+			admin.site.register(Candidate)
+			admin.site.register(Poll)
+
+
+
+		3. 모델 등록
+
+		▶migration 파일을 만든 후 - migration 파일을 DB에 반영 - runserver 과정을 밟습니다.
+
+		powershell 등에서 manage.py가 있는 디렉토리로 이동 후,
+		1.python manage.py makemigrations
+		2.python manage.py migrate
+		3.python manage.py runserver
+
+		브라우저에서 localhost:8000/admin으로 접속하면 Poll을 등록할 수 있습니다.
+
+
+			▶영상에서 쓰인 필드 클래스를 간략히 설명하면,
+
+				▶DateTimeField
+				date(날짜)와 time(시간)을 나타내며, python의 datetime.datetime 인스턴스로 표현됩니다.
+
+				▶CharField
+
+				string을 나타내며, 필수 인자 max_length가 있습니다.
+				길이가 긴 문자열을 저장하려면 TextField 등을 쓰세요.
+				+ CharField.max_length : 해당 필드의 최대길이를 설정합니다. 예를 들어 5로 설정하면 5글자 이하로만 저장할 수 있습니다.
+
+				▶IntegerField
+
+				정수를 나타냅니다.
+				이 필드는 Django가 지원하는 모든 데이터 베이스에서 -2147483648에서 2147483647까지의 정수를 안전하게 저장합니다.
+				더 큰 정수는 BigIntegerField 등을 이용하세요.
+
+				▶ForeignKey
+
+				한 모델에서 다른 모델을 이용할 때에 씁니다(보통 many-to-one 관계 모델에서 이용합니다).
+				영상에서도 여론조사(Poll) id 하나에 여러 개의 [후보-득표수]를 저장합니다
+

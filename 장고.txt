@@ -1,0 +1,77 @@
+하나의 싸이트에 여러개의 앱으로 구성한다. 앱을 여러곳에서 가져다쓸수있다.
+
+다른 사이트에서 필요하다면 미리만든앱을 가져다 쓰면된다.
+
+코드가 실행되게하려면 어떤 URL 요청에대해서 이 인덱스함수가 실행되도록 지정해줘야 한다.
+
+Mysite >> elections APp >>views. index   elections APP 이 실행되는 조건지정. view elections 만들고나서 
+
+실행되는 조건지정 해줘야 진행이된다 urlpatterns -> 서버에 요청이들어오면 어떻게 처리할지 담당자역할.
+
+어떤 앱이실행시키기위해서는 include 꼭 !!!!
+
+view 를쓰려면 view를 가져와야져 임폴트로.  싸이트에 여러 URL을 관리하려면 이방식이 적합하다.
+
+<모델클래스>
+
+일렉션앱에서, 기능을 추가하려고한다. 이걸담을 클레스가 필요하다. <- models.py
+
+model 기능을 사용하려면 models.Model 을 상속받아야한다.
+
+정보를 담은 클래스를만들고. db에 저장하자! 장고는 하나의 파이선이다 -> 종료하면 데이터 지워짐!
+
+서버가 꺼지더라도 정보를 불러와서 사이트에 다시 정보를 쓰기위해 !! db 사용~!! sqlite3 이용
+
+장고는 데이터를 model에 저장한다. <- 이 model 을 db에저장하기위해선 준비가 필요하다.
+
+settings.py -> INSTALLED_APPS 에 앱추가하기! python manage.py makemigrations <<
+
+python manage.py migrate <- 실제로 db에 쓰임!!!
+
+django admin 을이용하면 쉽게 db에 자료를 입력할수있다.
+
+python manage.py createsuperuser admin 계정만들기.
+
+candidate 에대한 자료를 만들려면 admin.py 로 들어가서.
+
+파이선에서 클래스를 표현하는 문자열을 정의할때는 str 메소드를 오버라이트해준다. (def __str__(self)):
+
+model에 class 안에 들어가서, 클래스를 표현할때 쓰인다.
+
+db에 저장되어있는 데이터불러오기 
+
+candidates 라는 변수만들기. 거기에 Candidate 안에 있는 정보 죄다 저장하기 딕셔너리형태로.
+
+이걸 쓰기위해선 from .models import Candidate !! 사용하기.
+
+여기서 문자들을 표현할때는 html 태그를 적절히 이용한다. 참고로 불러올때는 딕셔너리 {} 이용
+
+== %d (int) 이런것처럼. // input 에서~ 각 정보는 필드로 불러온다 candidate.필드.
+
+코드로 직접스트링에 추가해주기엔 너무 복잡한 html 
+election 앱 // templates // elections index.html 템플릿안에는 앱이랑 똑같은 이름을갖는 폴더를
+
+하나더만든다. index 함수에 render 함수 render(request, 'elections/index.html') 
+
+테이블로 만든 후보는 우리 디비에 후보가아니다 -> 디비에서 어떻게 불러와서 출력할까?
+
+context = {'candidates':candidates}	//context는 임의로 만든 딕셔너리.
+return render(request, 'elections/index.html', context)	//이 context를 html로 전달한다.
+
+MVC 패턴..
+
+localhost : 8000 -> mysite의 urls.py로 -> elections앱의 urls.py -> views.py파일의 index 메소드.
+
+1. [Controller] views.py <-candidate 모델 에서 데이터 읽어와서 index.html 이라는 템플릿에 data 전달 :: 조율
+2. [Model] models.py <-candidate 클래스에 정의된 형식대로 값이 저장되어있고, candidate 클래스이용해서 디비에서 값을 불러옴 :: 데이터
+3. [View] templates <- 화면 :: 화면에 어떻게 보여질지...
+
+model로 다만들고, admin에서 poll의 데이터를 추가해보자. model에서만들고 항상 makemigration 하는거랑 migrate 하는거 잊지말자!
+
+<링크만들기>
+
+elections 앱에서 템플릿의 인덱스.html 열어서 <a href = "url/내용,글자">{{보일이미지,글씨?}}</a>
+->빈페이지... 어떻게 페이지설정? urls.py 설정!!
+
+어떻게 동작하는걸까.. views.areas 라는함수에 <area>라는 매개변수 전달해주고싶다. areas/(?P<area>.+)/  .+ : 어떤걸 허용할지  이 url에 대해서
+views.areas로 원하는형식으로 전달이되는것.
