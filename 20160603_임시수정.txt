@@ -1,0 +1,52 @@
+====views.py 앞부분 수정=========================================
+
+def goto_game(request) :
+	Rejoin1 = int(request.POST['Player_num'])
+	Rejoin2 = int(request.POST['Player_Is_join'])
+	if(Rejoin2 == 1):
+		data = { 'num' : Rejoin1 , 'join' : Rejoin2 }
+		return render(request, 'Screen/Game.html', data)
+	else:
+		Is_join = Controll.join + 1
+		givenum = Controll.stackplayer + 0			
+		Controll.stackplayer += 1
+		data = { 'num' : givenum, 'join' : Is_join }			
+		return render(request, 'Screen/Game.html', data) 
+
+def goto_eddit(request) :
+	player_number = int(request.POST['Player_num'])
+	Is_join = int(request.POST['Player_Is_join'])
+	data = { 'num' : player_num, 'join' : Is_join }
+	return render(request, 'Screen/Edditor.html', data)
+
+def goto_HowtoGame(request) :
+	player_number = int(request.POST['Player_num'])
+	Is_join = int(request.POST['Player_Is_join'])
+	data = { 'num' : player_num, 'join' : Is_join }
+	return render(request, 'Screen/HowtoGame', data)
+
+====urls.py 수정===============================================================
+
+urlpatterns = [
+  url(r'^$', views.goto_game),
+  url(r'^Edditor/$', views.goto_eddit),
+  url(r'^HowtoGame/$', views.goto_HowtoGame),
+  url(r'^Select_Character/$', views.goto_Select_Character),
+  url(r'^SelectCard_Izreal/$', views.goto_SelectCard_Izreal),
+  url(r'^SelectCard_Xvii/$', views.goto_SelectCard_Xvii),
+  url(r'^SelectCard_Piz/$', views.goto_SelectCard_Piz),
+  url(r'^PlayScreen/(?P<locnum>.+)/$', views.goto_PlayScreen),
+  url(r'^Loopplay/(?P<locnum>.+)/$', views.Loop_play)
+]
+
+
+====Gameplaylib.py 수정===========================================================
+class Controll:
+    stackplayer=0
+    joinnum=0
+    location=0
+    selectok=0
+    Fieldloc=0
+    imloc=0
+    adad=0
+    join=0
