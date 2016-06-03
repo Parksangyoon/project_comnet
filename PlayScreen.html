@@ -1,0 +1,118 @@
+{% load staticfiles %}
+
+<html>
+<head>
+
+<style>
+
+ #play{
+  background-image:url( "{% static "game/battlescreen.png" %}");
+  background-repeat: no-repeat;
+  background-position : 50% 50%;
+  background-color:#0000000;
+  background-size: 100%;
+ }
+
+</style>
+ 
+  <title></title>
+</head>
+<body id = "play">
+<p>character: {{data.character1}}, HP: {{data.HP1}}, MP: {{data.MP1}}, positionx: {{data.Position_x1}}, positiony: {{data.Position_y1}}</p>
+<p> myloc: {{myloc}} ,card: {{data.firstcard1}} {{data.secondcard1}} {{data.thirdcard1}}</P>
+<p>character: {{data.character2}}, HP: {{data.HP2}}, MP: {{data.MP2}}, positionx: {{data.Position_x2}}, positiony: {{data.Position_y2}}</p>
+<p> myloc: {{myloc}} ,card: {{data.firstcard2}} {{data.secondcard2}} {{data.thirdcard2}}</P>
+
+
+<div id="wrap" style="width:1600px; margin:auto;">
+
+   <div id="hpheader" style="height:50px;">
+
+      <div id="player1" style="height:50px; width:760px; background:black;float:left;">
+        <div id="HP1" style="height:50px; width:{{data.HP1}}%; background:red; float:left;">
+        </div>
+      </div>
+
+      <div id="mid" style="height:50px; width:80px; background:yellow; float:left;">
+        <p align="center"><font>VS</font></p>
+      </div>
+
+      <div id="player2" style="height:50px; width:760px; background:black; float:right;">
+        <div id="HP2" style="height:50px; width:{{data.HP2}}%; background:red;float:right;">
+        </div>
+      </div>
+   </div>
+
+   <div id="mpheader2" style="height:50px;">
+      <div id="player1" style="height:50px; width:760px; background:gray;float:left;">
+        <div id="MP1" style="height:50px; width:{{data.MP1}}%; background:blue;float:left;">
+        </div>
+      </div>
+      <div id="player2" style="height:50px; width:760px; background:gray; float:right;">
+        <div id="MP1" style="height:50px; width:{{data.MP2}}%; background:blue; float:right;">
+        </div>
+      </div>
+   </div>
+
+   <div id="main" style="height:700px; width:1600px; margin-right:8px; float:left;">
+      <table border="1">
+        {% for i in data.length_y %}
+          <tr height=154>
+          {% for j in data.length_x %}
+            <th width=320>
+            <table>
+             {% if forloop.counter == data.Position_x1 %}
+              {% if forloop.parentloop.counter == data.Position_y1 %}
+                {% if data.Position_x1 == data.Position_x2 %}
+                  {% if data.Position_y1 == data.Position_y2 %}
+                    <th width=150>
+                  {% else %}
+                    <th width=320>
+                  {% endif %}
+                {% else %}
+                  <th width=320>
+                {% endif %}
+                <img src="{% static data.character1 %}" width=105% height=150%>
+                </th>
+
+              {% endif %}
+            {% endif %} 
+
+            {% if forloop.counter == data.Position_x2 %}
+              {% if forloop.parentloop.counter == data.Position_y2 %}
+          
+                {% if data.Position_x1 == data.Position_x2 %}
+                  {% if data.Position_y1 == data.Position_y2 %}
+                    <th width=150>
+                  {% else %}
+                    <th width=320>
+                  {% endif %}
+                {% else %}
+                  <th width=320>
+                {% endif %}
+                <img src="{% static data.character2 %}" width=105% height=150%>
+                </th>
+              {% endif %}
+            {% endif %}  
+            </table>
+            </th>
+          {% endfor %}
+          </tr>
+        {% endfor %}
+      </table>
+
+   </div>
+   <div style="clear:both;"></div>
+   <div id="footer" style="height:300px; margin-top:8px; background:black;">
+    
+   </div>
+ 
+</div>
+
+
+<form  align="center" action ="/Loopplay/{{myloc}}/" method ="post">
+ {% csrf_token %}
+ <input type="submit" value="select" />
+ </form>
+ </body>
+</html>

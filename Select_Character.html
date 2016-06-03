@@ -1,0 +1,47 @@
+{% load staticfiles %}
+
+<html>
+<head>
+<style>
+
+ #character{
+   background-image:url( "{% static "game/Black.jpg" %}");
+   background-repeat: no-repeat;
+   background-position : 50% 50%;
+   background-color:#0000000;
+   background-size: 100%;
+ }
+
+</style>
+</head>
+<body id="character">
+   
+   
+   <form align="left" action ="/SelectCard_Izreal/" method ="post">
+      {% csrf_token %}
+   <button name="locnum" value="{{locnum}}">
+   <a href="http://localhost:8000/SelectCard_Izreal/"><img  height ="350" width="350"src="{% static "game/izreal_profile.png" %}"></a>
+   </button>
+   </form>
+  
+   <form align="center" action ="/SelectCard_Piz/" method ="post">
+      {% csrf_token %}
+   <button name="locnum" value="{{locnum}}">
+   <a href="http://localhost:8000/SelectCard_Piz/"><img  height ="350" width="350"src="{% static "game/piz_profile.png" %}"></a>
+   </button>
+   </form>
+
+
+   
+   <form align="right" action ="/SelectCard_Xvii/" method ="post">
+      {% csrf_token %}
+   <button name="locnum" value="{{locnum}}">
+   <a href="http://localhost:8000/SelectCard_Xvii/"><img height ="350=0" width="350"src="{% static "game/xvi_profile.png" %}"></a>
+   </button>
+   </form>
+
+
+   </p>
+
+</body>
+
