@@ -1,0 +1,30 @@
+{% load staticfiles %}
+
+<html>
+<head>
+<style>
+
+ #Edit{
+   background-image:url( "{% static "game/index_edditor.png" %}");
+   background-repeat: no-repeat;
+   background-position : 50% 50%;
+   background-color:#EAEAEA;
+   background-attachment: scroll;
+   background-size: 80%;
+ }
+
+</style>
+</head>
+
+
+<body id = "Edit">
+<p style="margin-top:1000px">
+   <form align="right" action ="/" method ="post">
+      {% csrf_token %}
+   <button name="playstart" value="{{num}}">
+   <a href="http://localhost:8000/"><img   height ="100" width="300" src="{% static "game/returnbutton.png" %}"></div></a>
+   </button>
+   </form>
+   </p>
+</body>
+</html>

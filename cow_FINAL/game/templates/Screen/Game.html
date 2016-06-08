@@ -1,0 +1,44 @@
+{% load staticfiles %}
+<html>
+<head>
+<style>
+
+ #start{
+   background-image:url( "{% static "game/StartPlayScreen.PNG" %}");
+   background-repeat: no-repeat;
+   background-position : 50% 50%;
+   background-color:#EAEAEA;
+   background-attachment: scroll;
+   background-size: 100%;
+ }
+
+</style>
+</head>
+<body id="start">
+   
+    <p style="margin-top:800px">
+   <form align="center" action ="/HowtoGame/" method ="post">
+      {% csrf_token %}
+   <button name="playstart" value="{{num}}">
+   <a href="http://localhost:8000/HowtoGame/"><img  height ="100" width="300"src="{% static "game/howtogamebutton.png" %}"></a>
+   </button>
+   </form>
+
+   <p style="margin-top:30px">
+   <form align="center" action ="/Loading/" method ="post">
+      {% csrf_token %}
+   <button name="playstart" value="{{num}}">
+   <a href="http://localhost:8000/Select_Character/"><img  height ="100" width="300"src="{% static "game/gameplaybutton.png" %}"></a>
+   </button>
+   </form>
+
+   <p style="margin-top:30px">
+   <form align="center" action ="/Editor/" method ="post">
+      {% csrf_token %}
+   <button name="playstart" value="{{num}}">
+   <a href="http://localhost:8000/Editor/"><img  height ="100" width="300"src="{% static "game/edditorbutton.png" %}"></a>
+   </button>
+   </form>
+   
+</body>
+</html>

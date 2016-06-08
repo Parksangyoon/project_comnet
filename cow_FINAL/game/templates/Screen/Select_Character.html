@@ -1,0 +1,49 @@
+{% load staticfiles %}
+<html>
+<head>
+<style>
+
+ #character{
+   background-image:url("{% static "game/Battle.png" %}");
+   background-repeat: no-repeat;
+   background-position : 50% 50%;
+   background-color:#0000000;
+   background-size: 100%;
+ }
+
+</style>
+</head>
+<body id="character">
+   <table cellspacing="1" cellpadding="0" style="margin-top: 100px; width:1600px; height:900PX; " align="center">
+
+      <td>
+         <form align="center"  action ="/SelectCard/{{locnum}}/" method ="post">
+            {% csrf_token %}
+         <button name="characternum" value="1">
+         <a><img  height ="350" width="350"src="{% static "game/izreal_profile.png" %}"></a>/
+         </button>
+         </form>
+      </td>
+      
+      <td>
+         <form align="center"  action ="/SelectCard/{{locnum}}/" method ="post">
+            {% csrf_token %}
+         <button name="characternum" value="2">
+         <a><img height ="350" width="350"src="{% static "game/xvi_profile.png" %}"></a>
+         </button>
+         </form>
+      </td>
+
+      <td>
+         <form align="center" action ="/SelectCard/{{locnum}}/" method ="post">
+            {% csrf_token %}
+         <button name="characternum" value="3">
+         <a><img  height ="350" width="350"src="{% static "game/piz_profile.png" %}"></a>
+         </button>
+         </form>
+      </td>
+
+   </table>
+
+</body>
+

@@ -1,0 +1,187 @@
+{% load staticfiles %}
+<html>
+<head>
+<script type= "text/javascript">
+
+   if ({{ErrorCode}} == 1)
+   {
+   		alert("숫자만 입력해주세요 ^_^ ");
+   }
+   else if ({{ErrorCode}} == 2)
+   {
+   		alert("카드에 적힌 숫자만 입력해주세요 ! ^_^ ");
+   }
+   else if ({{ErrorCode}} == 3)
+   {
+   		alert("각각 다른 카드를 입력해주세요 ! ^_^ ");
+   }
+   else if ({{ErrorCode}} == 4)
+   {
+   		alert("Mp소모량이 초과 되었습니다 다른 카드를 입력해주세요 ! ^_^ ");
+   }
+   else
+   {
+   		;
+   } 
+</script>
+<style>
+
+ #char{
+ 	background-image:url( "{% static card.background %}");
+ 	background-repeat: no-repeat;
+ 	background-position : 50% 50%;
+ 	background-color:#0000000;
+ 	background-size: 100%;
+ }
+
+</style>
+</head>
+<body id="char">
+<form  align="center" action ="/PlayScreen/{{locnum}}/" method ="post">
+ {% csrf_token %}
+ First card: <input type="text" name="firstcard" value=""/>
+ {% csrf_token %}
+ Second card: <input type="text" name="secondcard" value=""/>
+ {% csrf_token %}
+ Third card: <input type="text" name="thirdcard" value=""/>
+ {% csrf_token %}
+ <input type="submit" value="select" />
+ {% csrf_token %}
+ <input type="reset" value="clean" />
+ </form>
+	
+	<table cellspacing="1" cellpadding="0"  style="margin-top: 200px;  width:1300px; height:700PX; " align="center">
+
+		<td>
+	 		<table   cellspacing="1" cellpadding="0" width="1250" height="700" align="center">
+
+	 		<tr>
+		 		<td>
+				<img src = '{% static card.card1 %}' width = "250" height = "250" align="center">
+				</td>
+				<td>
+				<img src = '{% static card.card2 %}' width = "250" height = "250"  align="center">
+				</td>
+				<td>
+				<img src = '{% static card.card3 %}' width = "250" height = "250"  align="center">
+				</td>
+				<td>
+				<img src = '{% static card.card4 %}' width = "250" height = "250"  align="center">
+				</td>
+				<td>
+				<img src = '{% static card.card5 %}' width = "250" height = "250"  align="center">
+				</td>
+
+			</tr>
+
+	 		<tr>
+
+		 		<td>
+				<img width = "250" height = "250" src = '{% static card.card6 %}'>
+				</td>
+				<td>
+				<img width = "250" height = "250" src = '{% static card.card7 %}'>
+				</td>
+				<td>
+				<img width = "250" height = "250" src = '{% static card.card8 %}'>
+				</td>
+				<td>
+				<img width = "250" height = "250" src = '{% static card.card9 %}'>
+				</td>
+				<td>
+				<img width = "250" height = "250" src = '{% static card.card10 %}'>
+				</td>
+			
+	 		</tr>
+
+	 		</table>
+
+	 	</td>
+
+	 	<td>
+	 		<table  cellspacing="1" cellpadding="0" width="500" height="700" align="center">
+				<div>
+					<table width="400" height="60" align="center">
+
+						<tr>
+			    			<td align="center"><font color = "white" size= 5>1P</font><td>
+			    		</tr>
+
+						<tr>
+							<td background="{% static "game/hp.png" %}" style="width:400px; height:25PX; " align="center"><font color="white" size=5>{{data.HP1}}</font></td>
+						</tr>
+
+						<tr>
+							<td background="{% static "game/mp.png" %}" style="width:400px; height:25PX;" align="center"><font color="white" size=5>{{data.MP1}}</font></td>
+						</tr>
+					</table>
+				</div>
+
+				
+
+				<div>
+					<table border="5" bordercolor="black" bgcolor="black" cellspacing="1" cellpadding="0" width="400" height="500" align="center">
+			        {% for i in data.length_y %}
+			          <tr>
+			            {% for j in data.length_x %}
+
+			                      <td border="2" bordercolor="red" bgcolor="#B8B8B8" cellspacing="1" cellpadding="0" width="80" height="50" align="center">
+			                      {% if data.PositionCheck %}
+			                      
+			                              {% if forloop.counter == data.Position_x1 %}
+			                                {% if forloop.parentloop.counter == data.Position_y1 %}
+					                              <table>
+					                              <td><img src="{% static data.character1 %}" width="40" height="50" align="center"></td>
+					                              <td><img src="{% static data.character2 %}" width="40" height="50" align="center"></td>
+					                              </table>
+			                                {% endif %}
+			                              {% endif %} 
+			                              
+			                      {% else %}
+
+			                              {% if forloop.counter == data.Position_x1 %}
+			                                  {% if forloop.parentloop.counter == data.Position_y1 %}
+			                                                       
+			                                      <img src="{% static data.character1 %}" width="80" height="50" align="center">
+
+			                                  {% endif %}
+			                              {% endif %} 
+
+			                              {% if forloop.counter == data.Position_x2 %}
+			                                  {% if forloop.parentloop.counter == data.Position_y2 %}
+
+			                                      <img src="{% static data.character2 %}" width="80" height="50" align="center">
+
+			                                  {% endif %}
+			                              {% endif %}
+
+			                      {% endif %}
+			            
+			            {% endfor %}
+			          </tr>
+			        {% endfor %}
+			    	</table>
+			    </div>
+
+			    <div>
+			    	<table width="400" height="60" align="center">
+			    		<tr>
+			    			<td align="center"><font color = "white" size= 5>2P</font><td>
+			    		</tr>
+
+						<tr>
+							<td background="{% static "game/hp.png" %}" style="width:400px; height:25PX;" align="center"><font color="white" size=5>{{data.HP2}}</font>
+							</td>
+						</tr>
+
+						<tr>
+							<td background="{% static "game/mp.png" %}" style="width:400px; height:25PX;" align="center"><font color="white" size=5>{{data.MP2}}</font>
+							</td>
+						</tr>
+					</table>
+				</div>
+	 	
+		    </table>
+		</td>
+	</table>
+</body>

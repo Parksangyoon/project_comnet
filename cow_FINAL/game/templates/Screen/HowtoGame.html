@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<html>
+<head>
+<style>
+
+ #How{
+   background-image:url( "{% static "game/HowtoPlay.png" %}");
+   background-repeat: no-repeat;
+   background-position : 50% 50%;
+   background-color:#EAEAEA;
+   background-attachment: scroll;
+   background-size: 95%;
+ }
+
+</style>
+</head>
+
+
+<body id = "How">
+<p style="margin-top:1000px">
+   <form align="right" action ="/" method ="post">
+      {% csrf_token %}
+   <button name="playstart" value="{{num}}">
+   <a><img   height ="100" width="300" src="{% static "game/returnbutton.png" %}"></div></a>
+   </button>
+   </form>
+   </p>
+</body>
+</html>

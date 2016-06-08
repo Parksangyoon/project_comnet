@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<html>
+<head>
+<style>
+
+ #lose{
+ 	background-image:url( "{% static "game/losing.jpg" %}");
+ 	background-repeat: no-repeat;
+ 	background-position : 50% 50%;
+ 	background-color:#0000000;
+ 	background-size: 100%;
+ }
+
+</style>
+</head>
+
+
+<body id="lose">
+<p style="margin-top:1000px">
+   <form align="right" action ="/" method ="post">
+      {% csrf_token %}
+   <button name="restart">
+   <a href="http://localhost:8000/"><img   height ="100" width="300" src="{% static "game/Restart.png" %}"></div></a>
+   </button>
+   </form>
+   </p>
+
+<p style="margin-top:1000px">
+   <form align="right" action ="/" method ="post">
+      {% csrf_token %}
+   <button name="stop" >
+   <a href="http://www.naver.com/"><img   height ="100" width="300" src="{% static "game/Stop.png" %}"></div></a>
+   </button>
+   </form>
+   </p>
+
+</body>
+</html>

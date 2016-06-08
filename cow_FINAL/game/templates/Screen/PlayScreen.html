@@ -1,0 +1,145 @@
+{% load staticfiles %}
+<html>
+<head>
+  <META HTTP-EQUIV="Refresh" content="2; URL=/Loopplay/{{myloc}}/">
+<style>
+
+ #play{
+  background-image:url( "{% static "game/battlescreen.png" %}");
+  background-repeat: no-repeat;
+  background-position : 50% 50%;
+  background-color:#0000000;
+  background-size: 100%;
+ }
+
+</style>
+ 
+  <title></title>
+</head>
+<body id = "play">
+
+<div id="wrap" style="width:1600px; margin:auto;">
+
+   <div id="hpheader" style="height:50px;">
+
+      <div id="player1" style="height:50px; width:760px; background:black;float:left;">
+        <img id="HP1" src='{% static "game/hp.png" %}' style="width:{{data.HP1}}%; height:100%; float:left;">
+      </div>
+
+      <div id="mid" style="height:50px; width:80px; background:yellow; float:left;">
+        <p align="center"><font>Round {{round}}</font></p>
+      </div>
+
+      <div id="player2" style="height:50px; width:760px; background:black; float:right;">
+        <img id="HP2" src='{% static "game/hp.png" %}' style="width:{{data.HP2}}%; height:100%; float:left;">
+      </div>
+   </div>
+
+   <div id="mpheader2" style="height:50px;">
+      <div id="player1" style="height:50px; width:760px; background:gray;float:left;">
+        <img id="MP1" src='{% static "game/mp.png" %}' style="width:{{data.MP1}}%; height:100%; float:left;">
+      </div>
+      <div id="player2" style="height:50px; width:760px; background:gray; float:right;">
+        <img id="MP2" src='{% static "game/mp.png" %}' style="width:{{data.MP2}}%; height:100%; float:left;">
+      </div>
+   </div>
+
+   <div id="main" style="height:700px; width:1600px; background:white; margin-right:8px; float:left;"> 
+
+   
+   <table border="5" bordercolor="black" bgcolor="#B8B8B8" cellspacing="1" cellpadding="0" width="1600" height="700" align="center">
+        {% for i in data.length_y %}
+          <tr>
+            {% for j in data.length_x %}
+
+
+                  
+                      <td border="2" bordercolor="red" bgcolor="#B8B8B8" cellspacing="1" cellpadding="0" width="300" height="150" align="center">{{forloop.counter}},{{forloop.parentloop.counter}}
+                      {% if data.PositionCheck %}
+                      
+
+                              {% if forloop.counter == data.Position_x1 %}
+                                {% if forloop.parentloop.counter == data.Position_y1 %}
+                              <table>
+                              <td><img src="{% static data.character1 %}" width="150" height="150" align="center"></td>
+                              <td><img src="{% static data.character2 %}" width="150" height="150" align="center"></td>
+                              </table>
+                                {% endif %}
+                              {% endif %} 
+                              
+
+                      {% else %}
+
+
+                              {% if forloop.counter == data.Position_x1 %}
+                                  {% if forloop.parentloop.counter == data.Position_y1 %}
+                                                       
+                                      <table>
+                                      <td><img src="{% static data.character1 %}" width="150" height="150" align="center"></td>
+                                      <td><img src="{% static data.tile %}" width="150" height="150" align="center"></td>
+                                      </table>
+
+                                  {% endif %}
+                              {% endif %} 
+
+                              {% if forloop.counter == data.Position_x2 %}
+                                  {% if forloop.parentloop.counter == data.Position_y2 %}
+
+                                      <table>
+                                      <td><img src="{% static data.tile %}" width="150" height="150" align="center"></td>
+                                      <td><img src="{% static data.character2 %}" width="150" height="150" align="center"></td>
+                                      </table>
+
+
+                                  {% endif %}
+                              {% endif %}
+
+
+                      
+                      {% endif %}
+            
+            {% endfor %}
+          </tr>
+        {% endfor %}
+    </table>
+
+
+
+   </div>
+   <div style="clear:both;"></div>
+   <div id="footer" style="height:300px; margin-top:8px; background:black;">
+   
+<table>
+ <table border="5" bordercolor="black" bgcolor="white" cellspacing="1" cellpadding="0" width="1600" height="300">
+<tr>
+  <td><img src="{% static data.character1 %}" height="200" align="center"></td> 
+  <td><img src="{% static data.firstcard1 %}" height="200" align="center"></td> 
+  <td><img src="{% static data.secondcard1 %}" height="200" align="center"></td>
+  <td><img src="{% static data.thirdcard1 %}"  height="200" align="center"></td>
+
+  <td><img src="{% static data.character2 %}" height="200" align="center"></td> 
+  <td><img src="{% static data.firstcard2 %}" height="200" align="center"></td> 
+  <td><img src="{% static data.secondcard2 %}" height="200" align="center"></td>
+  <td><img src="{% static data.thirdcard2 %}"  height="200" align="center"></td>
+ </tr>
+<tr>
+  <td border="2" bordercolor="red" bgcolor="white" cellspacing="1" cellpadding="0" height="30" align="center">P1</td>
+  <td border="2" bordercolor="red" bgcolor="white" cellspacing="1" cellpadding="0" height="30" align="center">P1 Phase1</td>
+  <td border="2" bordercolor="red" bgcolor="white" cellspacing="1" cellpadding="0" height="30" align="center">P1 Phase2</td>
+  <td border="2" bordercolor="red" bgcolor="white" cellspacing="1" cellpadding="0" height="30" align="center">P1 Phase3</td>
+  
+  <td border="2" bordercolor="red" bgcolor="white" cellspacing="1" cellpadding="0" height="30" align="center">P2</td>
+  <td border="2" bordercolor="red" bgcolor="white" cellspacing="1" cellpadding="0" height="30" align="center">P2 Phase3</td>
+  <td border="2" bordercolor="red" bgcolor="white" cellspacing="1" cellpadding="0" height="30" align="center">P2 Phase3</td>
+  <td border="2" bordercolor="red" bgcolor="white" cellspacing="1" cellpadding="0" height="30" align="center">P2 Phase3</td>
+  
+ </tr>
+</table>
+   </div>
+ 
+</div>
+    
+
+
+ </body>
+</html>
